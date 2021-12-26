@@ -15,44 +15,24 @@
  
 <div class="" id="map"></div>
 
-<div class="container p-5 " style="background-color: rgb(230, 230, 230);">
-    <% for(let i = 0; i < gateways.length; i++) { %>
-        <div class="row d-flex mx-5 justify-content-center">
-            <div class="col-6 d-flex align-items-center">
-                <div class="mr-2">
-                    <img src="images/antenna.png" alt="">
-                </div>
-                <div class="">
-                    <p class="mb-0">
-                        <%= gateways[i].name %>
-                        <%= gateways[i].status %>
-                    </p>
-                    <p class="mb-0">
-                        <%= gateways[i].location.latitude %> <%= gateways[i].location.longitude %><br>
-                    </p>
 
-                    <p>online: <%= gateways[i].online %></p>
-                </div>
-            </div>
-            <div class="col-1 d-flex align-items-center">
-                <div>
-                    <p class="mb-0">                        
-                        <%= gateways[i].country_code %>
-                    </p>
-                    <p>
-                        <%= gateways[i].frequency_plan %>
-                    </p>
-                </div>    
-            </div>
-        </div>
-        <hr>
-    <% } %>
-</div>
+
 
 
 <script>
 	let map
-    let marker
+
+    let markers = []
+    let gateways = '<%- gateways %>'
+
+    gateways = JSON.parse(gateways)
+
+    console.log(gateways)
+
+    for (let i = 0; i < gateways.length; i++) {
+        const element = gateways[i]
+        console.log(element)        
+    }
 
 	function initMap() {
 		map = new google.maps.Map(document.getElementById('map'), {
@@ -66,20 +46,61 @@
         //         position: { lat: 42, lng: 21.456 },
         //         map: map,
         //     })
-        <% for(let i = 0; i < gateways.length; i++) { %>
+
+
         
-            marker = new google.maps.Marker({
-                position: { lat: <%= gateways[i].location.latitude %>, lng: <%= gateways[i].location.longitude %> },
+            
+
+        gateways.forEach(gateway => {
+            let marker = new google.maps.Marker({
+                position: { lat: gateway.location.latitude, lng: gateway.location.longitude },
                 map: map,
-                icon: 'http://localhost:3000/images/antenna.png',
+                icon: '/images/antenna.png',
                 scale: 0.1,
                 label: 'test',
-                title: '<%= gateways[i].name %>'
+                title: gateway.name
             })
+            
 
+            const contentString =
+                '<div id="content">' +
+                '<div id="siteNotice">' +
+                "</div>" +
+                `<h1 id="firstHeading" class="firstHeading">${gateway.name}</h1>` +
+                '<div id="bodyContent">' +
+                `<p>Country code: <b>${gateway.country_code}</b></p>` +
+                `<p>Last seen: ${gateway.last_seen}</p>` +
+                `<a href="/gateways/${gateway._id}" class="btn btn-primary">Go to gateway</a>` +
+                "</div>" +
+                "</div>";
+            
+            let infowindow = new google.maps.InfoWindow({
+                content: contentString,
+            })
+            
+            marker.addListener('click', () => {
+                infowindow.open({
+                    anchor: marker,
+                    map,
+                    shouldFocus: false
+                })
+            })
             marker.setMap(map)
-        <% } %>
+            markers.push(marker)
+        })
+
+
+
+
+
+
+
+
+
+            //marker = null
+
 	}
+</script>
 </script>
 
 
