@@ -1,0 +1,89 @@
+<%- include("partials/header") %>
+
+<style>
+	#map {
+		height: 70%;
+	}
+	html,
+	body {
+		height: 100%;
+		margin: 0;
+		padding: 0;
+	}
+</style>
+
+ 
+<div class="" id="map"></div>
+
+<div class="container p-5 " style="background-color: rgb(230, 230, 230);">
+    <% for(let i = 0; i < gateways.length; i++) { %>
+        <div class="row d-flex mx-5 justify-content-center">
+            <div class="col-6 d-flex align-items-center">
+                <div class="mr-2">
+                    <img src="images/antenna.png" alt="">
+                </div>
+                <div class="">
+                    <p class="mb-0">
+                        <%= gateways[i].name %>
+                        <%= gateways[i].status %>
+                    </p>
+                    <p class="mb-0">
+                        <%= gateways[i].location.latitude %> <%= gateways[i].location.longitude %><br>
+                    </p>
+
+                    <p>online: <%= gateways[i].online %></p>
+                </div>
+            </div>
+            <div class="col-1 d-flex align-items-center">
+                <div>
+                    <p class="mb-0">                        
+                        <%= gateways[i].country_code %>
+                    </p>
+                    <p>
+                        <%= gateways[i].frequency_plan %>
+                    </p>
+                </div>    
+            </div>
+        </div>
+        <hr>
+    <% } %>
+</div>
+
+
+<script>
+	let map
+    let marker
+
+	function initMap() {
+		map = new google.maps.Map(document.getElementById('map'), {
+			center: { lat: 42, lng: 21.456 },
+			zoom: 10
+		})
+        
+        
+
+        // new google.maps.Marker({
+        //         position: { lat: 42, lng: 21.456 },
+        //         map: map,
+        //     })
+        <% for(let i = 0; i < gateways.length; i++) { %>
+        
+            marker = new google.maps.Marker({
+                position: { lat: <%= gateways[i].location.latitude %>, lng: <%= gateways[i].location.longitude %> },
+                map: map,
+                icon: 'http://localhost:3000/images/antenna.png',
+                scale: 0.1,
+                label: 'test',
+                title: '<%= gateways[i].name %>'
+            })
+
+            marker.setMap(map)
+        <% } %>
+	}
+</script>
+
+
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMraH0dFJoaQ2yJMW7R3cdAYXFpjDAaXc&callback=initMap">
+</script>
+<%- include("partials/footer") %>

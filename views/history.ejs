@@ -1,0 +1,41 @@
+<%- include("partials/header") %>
+
+
+<div class="container p-5 " style="background-color: rgb(230, 230, 230);">
+
+    <h2 class="display-4 mb-5 text-center">History</h2>
+
+    <% for(let i = 0; i < gateways.length; i++) { %>
+        <div class="row d-flex mx-5 justify-content-center">
+            <div class="col-6 d-flex align-items-center">
+                <div class="mr-2">
+                    <img src="images/antenna.png" alt="">
+                </div>
+                <div class="">
+                    <p class="mb-0">
+                        <%= gateways[i].name %>
+                        <%= gateways[i].status %>
+                    </p>
+                    <p class="mb-0">
+                        <%= gateways[i].location.latitude %> <%= gateways[i].location.longitude %><br>
+                    </p>
+
+                    <p>online: <%= gateways[i].online %></p>
+                </div>
+            </div>
+            <div class="col-1 d-flex align-items-center">
+                <div>
+                    <p class="mb-0">                        
+                        <%= gateways[i].country_code %>
+                    </p>
+                    <p>
+                        <%= gateways[i].frequency_plan %>
+                    </p>
+                </div>    
+            </div>
+        </div>
+        <hr>
+    <% } %>
+</div>
+
+<%- include("partials/footer") %>
