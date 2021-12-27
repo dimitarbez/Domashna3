@@ -14,6 +14,13 @@
 
  
 <div class="" id="map"></div>
+<div class="container" id="loading">
+    <div class="row justify-content-center">
+        <div class="col-5">
+            <h2 class="display-1">Loading...</h2>
+        </div>
+    </div>
+</div>
 
 
 
@@ -22,89 +29,77 @@
 <script>
 	let map
 
+    let gateways_data
     let markers = []
-    let gateways = '<%- gateways %>'
 
-    gateways = JSON.parse(gateways)
+    fetch('/gateway')
+        .then(response => response.json())
+        .then(gateways => {          
 
-    console.log(gateways)
+            gateways_data = gateways
 
-    for (let i = 0; i < gateways.length; i++) {
-        const element = gateways[i]
-        console.log(element)        
-    }
+            gateways.forEach(gateway => {
+
+                try{
+                    let marker = new google.maps.Marker({
+                        position: { lat: gateway.location.latitude, lng: gateway.location.longitude },
+                        map: map,
+                        icon: '/images/antenna.png',
+                        scale: 0.1,
+                        label: 'test',
+                        title: gateway.name
+                    })
+                    
+
+                    const contentString =
+                        '<div id="content">' +
+                        '<div id="siteNotice">' +
+                        "</div>" +
+                        `<h1 id="firstHeading" class="firstHeading">${gateway.name}</h1>` +
+                        '<div id="bodyContent">' +
+                        `<p>Country code: <b>${gateway.country_code}</b></p>` +
+                        `<p>Last seen: ${gateway.last_seen}</p>` +
+                        `<a href="/gateway/${gateway._id}" class="btn btn-sm btn-primary">Go to gateway</a>` +
+                        "</div>" +
+                        "</div>";
+                    
+                    let infowindow = new google.maps.InfoWindow({
+                        content: contentString,
+                    })
+                    
+                    marker.addListener('click', () => {
+                        infowindow.open({
+                            anchor: marker,
+                            map,
+                            shouldFocus: false
+                        })
+                    })
+                    marker.setMap(map)
+                    markers.push(marker)
+                } catch (err) {
+                    console.log(err)
+                }
+            })
+
+
+        })
+        .then(() => {
+            document.querySelector('#loading').remove()
+        })
 
 	function initMap() {
 		map = new google.maps.Map(document.getElementById('map'), {
 			center: { lat: 42, lng: 21.456 },
 			zoom: 10
 		})
-        
-        
-
-        // new google.maps.Marker({
-        //         position: { lat: 42, lng: 21.456 },
-        //         map: map,
-        //     })
-
-
-        
-            
-
-        gateways.forEach(gateway => {
-            let marker = new google.maps.Marker({
-                position: { lat: gateway.location.latitude, lng: gateway.location.longitude },
-                map: map,
-                icon: '/images/antenna.png',
-                scale: 0.1,
-                label: 'test',
-                title: gateway.name
-            })
-            
-
-            const contentString =
-                '<div id="content">' +
-                '<div id="siteNotice">' +
-                "</div>" +
-                `<h1 id="firstHeading" class="firstHeading">${gateway.name}</h1>` +
-                '<div id="bodyContent">' +
-                `<p>Country code: <b>${gateway.country_code}</b></p>` +
-                `<p>Last seen: ${gateway.last_seen}</p>` +
-                `<a href="/gateways/${gateway._id}" class="btn btn-sm btn-primary">Go to gateway</a>` +
-                "</div>" +
-                "</div>";
-            
-            let infowindow = new google.maps.InfoWindow({
-                content: contentString,
-            })
-            
-            marker.addListener('click', () => {
-                infowindow.open({
-                    anchor: marker,
-                    map,
-                    shouldFocus: false
-                })
-            })
-            marker.setMap(map)
-            markers.push(marker)
-        })
-
-
-
-
-
-
-
-
-
-            //marker = null
-
+    
 	}
-</script>
 </script>
 
 
 <script async
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMraH0dFJoaQ2yJMW7R3cdAYXFpjDAaXc&callback=initMap">
 </script>
+
+
 <%- include("partials/footer") %>

@@ -1,0 +1,45 @@
+<%- include("../partials/header") %>
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <form action="/gateway/<%= gateway._id %>?_method=PUT" method="post" class="col-md-8 col-10">
+			<div class="form-group">
+				<label for="id">Gateway ID</label>
+				<input class="form-control" type="text" value="<%= gateway.id %>" name="gateway[id]" id="id">
+			</div>
+            <div class="form-group">
+				<label for="name">Gateway name</label>
+				<input class="form-control" type="text" value="<%= gateway.name %>" name="gateway[name]" id="name">
+			</div>
+            <div class="form-group">
+				<label for="country_code">Gateway ID</label>
+				<input class="form-control" type="text" value="<%= gateway.country_code %>" name="gateway[country_code]" id="country_code">
+			</div>
+            <div class="form-group">
+                <label for="frequency_plan">Frequency plan</label>
+				<input class="form-control" type="text" value="<%= gateway.frequency_plan %>" name="gateway[frequency_plan]" id="frequency_plan">
+			</div>
+            <div class="form-group">
+                <label for="latitude">Latitude</label>
+				<input class="form-control" type="number" value="<%= gateway.location.latitude %>" name="gateway[location][latitude]" id="latitude">
+			</div>
+            <div class="form-group">
+                <label for="longitude">Longitude</label>
+				<input class="form-control" type="number" value="<%= gateway.location.longitude %>" name="gateway[location][longitude]" id="longitude">
+			</div>
+            <div class="form-group">
+                <label for="altitude">Altitude</label>
+				<input class="form-control" type="number" value="<%= gateway.location.altitude %>" name="gateway[location][altitude]" id="altitude">
+			</div>
+            <div class="form-check">
+                <input class="form-check-input" value="true" type="checkbox" <% if(gateway.online) {%> checked  <% } %>  name="gateway[online]" id="online">
+                <label class="form-check-label" for="online">Online status</label>
+            </div>
+            <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+<%- include("../partials/footer") %>

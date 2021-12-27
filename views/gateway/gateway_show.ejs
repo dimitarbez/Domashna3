@@ -1,0 +1,52 @@
+<%- include("../partials/header") %>
+
+
+<div class="container">
+    <div class="row mt-5 justify-content-center">
+        <div action="/gateway" method="post" class="col-md-8 col-10">
+			<div class="form-group">
+				<label for="id">Gateway ID</label>
+				<input class="form-control" type="text" value="<%= gateway.id %>" readonly name="gateway[id]" id="id">
+			</div>
+            <div class="form-group">
+				<label for="name">Gateway name</label>
+				<input class="form-control" type="text" value="<%= gateway.name %>" readonly name="gateway[name]" id="name">
+			</div>
+            <div class="form-group">
+				<label for="country_code">Gateway ID</label>
+				<input class="form-control" type="text" value="<%= gateway.country_code %>" readonly name="gateway[country_code]" id="country_code">
+			</div>
+            <div class="form-group">
+                <label for="frequency_plan">Frequency plan</label>
+				<input class="form-control" type="text" value="<%= gateway.frequency_plan %>" readonly name="gateway[frequency_plan]" id="frequency_plan">
+			</div>
+            <div class="form-group">
+                <label for="latitude">Latitude</label>
+				<input class="form-control" type="number" value="<%= gateway.location.latitude %>" readonly name="gateway[location][latitude]" id="latitude">
+			</div>
+            <div class="form-group">
+                <label for="longitude">Longitude</label>
+				<input class="form-control" type="number" value="<%= gateway.location.longitude %>" readonly name="gateway[location][longitude]" id="longitude">
+			</div>
+            <div class="form-group">
+                <label for="altitude">Altitude</label>
+				<input class="form-control" type="number" value="<%= gateway.location.altitude %>" readonly name="gateway[location][altitude]" id="altitude">
+			</div>
+            <div class="form-group">
+                <label for="altitude">Online</label>
+				<input class="form-control" type="text" <% if(gateway.online) {%> value="True" <% } else { %> value="False" <% } %> readonly name="gateway[location][altitude]" id="altitude">
+			</div>
+            <div class="d-flex">
+                <div class="mr-1">
+                    <a class="btn btn-outline-primary" href="/gateway/<%= gateway._id %>/edit">Edit</a>
+                </div>
+                <form action="/gateway/<%= gateway._id %>?_method=DELETE" method="post">
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<%- include("../partials/footer") %>

@@ -25,7 +25,7 @@ let LoraGateway = require('./models/gateway')
 const User = require('./models/user')
 
 let mainRoutes = require('./routes/main')
-let gatewayRoutes
+let gatewayRoutes = require('./routes/gateways')
 
 
 app.use(passport.initialize())
@@ -53,7 +53,7 @@ app.use(methodOverride('_method'))
 app.set('view engine', 'ejs')
 
 app.use(mainRoutes)
-
+app.use(gatewayRoutes)
 
 
 app.get('*', (req, res) => {

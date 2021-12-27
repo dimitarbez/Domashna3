@@ -5,7 +5,13 @@ let userSchema = mongoose.Schema({
     username: { type: String, unique: true },
     password: String,
     fullname: String,
-    admin: Boolean
+    admin: Boolean,
+    history: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'lora_gateway'
+        }
+    ]
 })
 
 userSchema.plugin(passportLocalMongoose)
