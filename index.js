@@ -25,6 +25,7 @@ let LoraGateway = require('./models/gateway')
 const User = require('./models/user')
 
 let mainRoutes = require('./routes/main')
+let gatewayRoutes
 
 
 app.use(passport.initialize())
@@ -60,6 +61,6 @@ app.get('*', (req, res) => {
     res.redirect('/')
 })
 
-app.listen(process.env.PORT || 3001, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log('app started')
 })

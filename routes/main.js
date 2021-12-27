@@ -113,7 +113,7 @@ router.post('/register', (req, res) => {
 })
 
 
-router.get('/submit_gateway', (req, res) => {
+router.get('/submit_gateway', middleware.isLoggedIn, (req, res) => {
     res.render('submit_gateway')
 })
 

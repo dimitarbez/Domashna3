@@ -11,4 +11,6 @@ middlewareObj.isLoggedIn = (req, res, next) => {
     }
 }
 
+middlewareObj.isAdmin
+
 module.exports = middlewareObj
