@@ -2,7 +2,7 @@
 
 <style>
 	#map {
-		height: 70%;
+		height: 90%;
 	}
 	html,
 	body {
@@ -87,13 +87,59 @@
             document.querySelector('#loading').remove()
         })
 
+    
+    let locationInfowindow
 	function initMap() {
 		map = new google.maps.Map(document.getElementById('map'), {
 			center: { lat: 42, lng: 21.456 },
 			zoom: 10
 		})
     
+
+        locationInfowindow = new google.maps.InfoWindow();
+
+        const locationButton = document.createElement("button");
+        locationButton.classList.add('btn')
+        locationButton.classList.add('btn-primary')
+
+        locationButton.textContent = "Pan to Current Location";
+        locationButton.classList.add("custom-map-control-button");
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+        locationButton.addEventListener("click", () => {
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                const pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+
+                locationInfowindow.setPosition(pos);
+                locationInfowindow.setContent("Location found.");
+                locationInfowindow.open(map);
+                map.setCenter(pos);
+                },
+                () => {
+                handleLocationError(true, locationInfowindow, map.getCenter());
+                }
+            );
+            } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, locationInfowindow, map.getCenter());
+            }
+        });
 	}
+
+    function handleLocationError(browserHasGeolocation, locationInfowindow, pos) {
+        locationInfowindow.setPosition(pos);
+        locationInfowindow.setContent(
+            browserHasGeolocation
+            ? "Error: The Geolocation service failed."
+            : "Error: Your browser doesn't support geolocation."
+        );
+        locationInfowindow.open(map);
+    }
 </script>
 
 
