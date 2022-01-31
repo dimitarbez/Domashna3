@@ -24,8 +24,8 @@ app.use(require("express-session")({
 let LoraGateway = require('./models/gateway')
 const User = require('./models/user')
 
-let mainRoutes = require('./routes/main')
-let gatewayRoutes = require('./routes/gateways')
+let mainRoutes = require('./microservices/main')
+let gatewayRoutes = require('./microservices/gateways')
 
 
 app.use(passport.initialize())
